@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./Button";
 import { ThemeContext } from "./ThemeContext";
@@ -8,6 +8,33 @@ export function DownBox() {
   const [valueArray, setValueArray] = useState("");
   const [rslt, setRslt] = useState(0);
   const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const operators = ["+", "-", "*", "/", "%"];
+  let found = false;
+
+  for (let i = 0; i < valueArray.length - 1; i++) {
+    if (
+      operators.includes(valueArray[i]) &&
+      operators.includes(valueArray[i + 1])
+    ) {
+      found = true;
+      break;
+    }
+  }
+
+  function equalClick() {
+    if (found) {
+      setRslt("Error");
+    } else {
+      if (
+        valueArray.includes("++") ||
+        valueArray.includes("+*") ||
+        valueArray.includes("++")
+      )
+        setRslt(eval(valueArray));
+    }
+  }
+
   function xPosition(e) {
     const box = e.currentTarget.getBoundingClientRect();
     setTimeout(() => setMove({ x: e.clientX - box.left }), 130);
@@ -15,10 +42,8 @@ export function DownBox() {
   function addValue(value) {
     setValueArray((prev) => prev + value);
   }
-  function equalClick() {
-    setRslt(eval(valueArray));
-  }
-console.log(theme)
+
+  console.log(theme);
   return (
     <div className="relative">
       <div className="absolute left-5 top-5">
