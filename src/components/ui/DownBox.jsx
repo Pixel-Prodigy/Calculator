@@ -1,13 +1,11 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Button } from "./Button";
-import { ThemeContext } from "./ThemeContext";
+import { Button } from "./Button"; // Ensure you have this Button component imported
 
 export function DownBox() {
   const [move, setMove] = useState({ x: 167 });
   const [valueArray, setValueArray] = useState("");
   const [rslt, setRslt] = useState(0);
-  // const { theme } = useContext(ThemeContext);
 
   const operators = ["+", "-", "*", "/", "%"];
 
@@ -24,15 +22,22 @@ export function DownBox() {
   }, [valueArray]);
 
   function equalClick() {
-    if (checkOperators) {
+    if (checkOperators()) {
       setRslt("Error");
     } else {
       if (
         valueArray.includes("++") ||
         valueArray.includes("+*") ||
         valueArray.includes("++")
-      )
-        setRslt(eval(valueArray));
+      ) {
+        setRslt("Error");
+      } else {
+        try {
+          setRslt(eval(valueArray));
+        } catch (e) {
+          setRslt("Error");
+        }
+      }
     }
   }
 
@@ -40,18 +45,16 @@ export function DownBox() {
     const box = e.currentTarget.getBoundingClientRect();
     setMove({ x: e.clientX - box.left });
   }
+
   function addValue(value) {
     setValueArray((prev) => prev + value);
   }
 
-  // console.log(theme);
   return (
     <div className="relative">
       <div className="absolute left-5 top-5">
         <span>
-          {/* <span
-          // onClick={toggleTheme}
-          >
+          <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -66,23 +69,6 @@ export function DownBox() {
                 d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
               />
             </svg>
-          </span> */}
-
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-              />
-            </svg>
           </span>
         </span>
       </div>
@@ -95,7 +81,7 @@ export function DownBox() {
         onMouseMove={xPosition}
       >
         <motion.div
-          className={`h-[3px] w-[900px] top-0  absolute`}
+          className="h-[3px] w-[900px] top-0 absolute"
           animate={{ left: `${move.x - 538}px` }}
           style={{
             background:
@@ -253,7 +239,7 @@ export function DownBox() {
           className="hover:text-[#469c99] bg-[#33a9a5] hover:scale-110 transition-transform"
           onClick={equalClick}
         >
-          <span className="text-2xl cursor-pointer">=</span>
+          <span className="text-xl">=</span>
         </Button>
       </motion.div>
     </div>
