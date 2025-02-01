@@ -1,4 +1,4 @@
-import { Base } from "./components/ui/BAse";
+import { Base } from "./components/ui/Base";
 import { ThemeProvider } from "./components/ui/ThemeContext";
 
 function App() {
