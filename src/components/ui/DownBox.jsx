@@ -77,7 +77,7 @@ export function DownBox() {
           animate={{ left: `${move.x - 538}px` }}
           style={{
             background:
-              "linear-gradient(to right, rgba(0, 0, 0, 0) 40%, #556a7a 60%, rgba(0, 0, 0, 0) 78%)",
+              "linear-gradient(to right, rgba(0, 0, 0, 0) 40%, #b5cada 60%, rgba(0, 0, 0, 0) 78%)",
           }}
           transition={{
             duration: 0.4,
