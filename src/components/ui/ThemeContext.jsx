@@ -1,17 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useMemo } from "react";
 
-// Create the context with a default value
 export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(false); 
 
-const toggleTheme = () => {
-    setTheme(!theme); 
-  }
+  const toggleTheme = () => {
+    setTheme(prevTheme => !prevTheme); 
+  };
+
+  const contextValue = useMemo(() => ({ theme, toggleTheme }), [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );

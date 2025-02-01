@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./Button";
 import { ThemeContext } from "./ThemeContext";
@@ -7,23 +7,24 @@ export function DownBox() {
   const [move, setMove] = useState({ x: 167 });
   const [valueArray, setValueArray] = useState("");
   const [rslt, setRslt] = useState(0);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  // const { theme } = useContext(ThemeContext);
 
   const operators = ["+", "-", "*", "/", "%"];
-  let found = false;
 
-  for (let i = 0; i < valueArray.length - 1; i++) {
-    if (
-      operators.includes(valueArray[i]) &&
-      operators.includes(valueArray[i + 1])
-    ) {
-      found = true;
-      break;
+  const checkOperators = useCallback(() => {
+    for (let i = 0; i < valueArray.length - 1; i++) {
+      if (
+        operators.includes(valueArray[i]) &&
+        operators.includes(valueArray[i + 1])
+      ) {
+        return true;
+      }
     }
-  }
+    return false;
+  }, [valueArray]);
 
   function equalClick() {
-    if (found) {
+    if (checkOperators) {
       setRslt("Error");
     } else {
       if (
@@ -37,52 +38,52 @@ export function DownBox() {
 
   function xPosition(e) {
     const box = e.currentTarget.getBoundingClientRect();
-    setTimeout(() => setMove({ x: e.clientX - box.left }), 130);
+    setMove({ x: e.clientX - box.left });
   }
   function addValue(value) {
     setValueArray((prev) => prev + value);
   }
 
-  console.log(theme);
+  // console.log(theme);
   return (
     <div className="relative">
       <div className="absolute left-5 top-5">
         <span>
-          {theme ? (
-            <span onClick={toggleTheme}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-                />
-              </svg>
-            </span>
-          ) : (
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                />
-              </svg>
-            </span>
-          )}
+          {/* <span
+          // onClick={toggleTheme}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+              />
+            </svg>
+          </span> */}
+
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+              />
+            </svg>
+          </span>
         </span>
       </div>
       <div className="bg-black flex-col whitespace-nowrap overflow-x-scroll rounded-t-3xl h-[255px] w-[350px] py-7 px-5 flex justify-end items-end text-4xl">
@@ -92,21 +93,16 @@ export function DownBox() {
       <motion.div
         className="grid grid-cols-4 grid-rows-5 gap-2 bg-[#072942] px-6 py-6 overflow-hidden w-[350px] relative h-[400px] rounded-b-3xl text-white"
         onMouseMove={xPosition}
-        onMouseLeave={() => setMove({ x: 0 })}
       >
         <motion.div
-          className={`h-[3px] w-[900px] top-0 ${
-            move.x > 0 ? "visible" : "hidden"
-          } absolute`}
+          className={`h-[3px] w-[900px] top-0  absolute`}
+          animate={{ left: `${move.x - 538}px` }}
           style={{
-            left: `${move.x - 538}px`,
             background:
               "linear-gradient(to right, rgba(0, 0, 0, 0) 40%, #556a7a 60%, rgba(0, 0, 0, 0) 78%)",
           }}
           transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
+            duration: 0.3,
           }}
         ></motion.div>
         <Button
