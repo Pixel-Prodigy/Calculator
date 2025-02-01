@@ -102,7 +102,7 @@ export function DownBox() {
               "linear-gradient(to right, rgba(0, 0, 0, 0) 40%, #556a7a 60%, rgba(0, 0, 0, 0) 78%)",
           }}
           transition={{
-            duration: 0.3,
+            duration: 0.4,
           }}
         ></motion.div>
         <Button
