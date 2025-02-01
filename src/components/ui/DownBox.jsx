@@ -25,18 +25,10 @@ export function DownBox() {
     if (checkOperators()) {
       setRslt("Error");
     } else {
-      if (
-        valueArray.includes("++") ||
-        valueArray.includes("+*") ||
-        valueArray.includes("++")
-      ) {
+      try {
+        setRslt(eval(valueArray));
+      } catch {
         setRslt("Error");
-      } else {
-        try {
-          setRslt(eval(valueArray));
-        } catch{
-          setRslt("Error");
-        }
       }
     }
   }
@@ -236,7 +228,7 @@ export function DownBox() {
           <span className="text-[#33a9a5] text-3xl cursor-pointer">.</span>
         </Button>
         <Button
-          className="hover:text-[#469c99] bg-[#33a9a5] hover:scale-110 transition-transform"
+          className="hover:text-[#469c99] bg-teal-500 hover:scale-110  transition-transform"
           onClick={equalClick}
         >
           <span className="text-xl">=</span>
