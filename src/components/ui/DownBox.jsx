@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Button } from "./Button"; // Ensure you have this Button component imported
+import { Button } from "./Button";
 
 export function DownBox() {
   const [move, setMove] = useState({ x: 167 });
@@ -34,7 +34,7 @@ export function DownBox() {
       } else {
         try {
           setRslt(eval(valueArray));
-        } catch (e) {
+        } catch{
           setRslt("Error");
         }
       }
@@ -72,7 +72,7 @@ export function DownBox() {
           </span>
         </span>
       </div>
-      <div className="bg-black flex-col whitespace-nowrap overflow-x-scroll rounded-t-3xl h-[255px] w-[350px] py-7 px-5 flex justify-end items-end text-4xl">
+      <div className="bg-black flex-col whitespace-nowrap overflow-scroll rounded-t-3xl h-[255px] w-[350px] py-7 px-5 flex justify-end items-end text-4xl">
         <span className="text-[1.6rem] mb-2 text-gray-400">{valueArray}</span>
         <span className="text-[3rem]">{rslt}</span>
       </div>
